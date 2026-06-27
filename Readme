@@ -1,5 +1,29 @@
-docker image prune -a -f
-docker system prune -a --volume -f 
-docker build -t multi-stage_go_image .
-docker run --name multi-stage_container -p 8080:8080 -d multi-stage_go_image 
-docker exec -it multi-stage_container sh 
+Multi-stage Docker build example for a small Go app
+
+This repository shows a minimal example of building a Go application using multi-stage Dockerfiles. The build stage compiles the Go binary, and the runtime stage produces a small runtime image to run the app.
+
+Important commands (most important first):
+
+1) Build the image (produces the multi-stage image):
+
+   docker build -t multi-stage_go_image .
+
+2) Run the container (maps port 8080, names the container):
+
+   docker run --name multi-stage_container -p 8080:8080 -d multi-stage_go_image
+
+Helpful cleanup and debugging commands:
+
+- Remove unused images:
+
+  docker image prune -a -f
+
+- Full system prune including volumes:
+
+  docker system prune -a --volumes -f
+
+- Open a shell inside the running container:
+
+  docker exec -it multi-stage_container sh
+
+That's it — build, run, and use the exec command to inspect the running container. The Dockerfiles (Dockerfile.build and Dockerfile.runtime) show the multi-stage setup used here.
