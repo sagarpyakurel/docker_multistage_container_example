@@ -1,29 +1,51 @@
-Multi-stage Docker build example for a small Go app
+=============================================
+::  MULTI-STAGE DOCKER BUILD EXAMPLE  ::
+=============================================
+
+# Multi-stage Docker build example for a small Go app
+
+***
 
 This repository shows a minimal example of building a Go application using multi-stage Dockerfiles. The build stage compiles the Go binary, and the runtime stage produces a small runtime image to run the app.
 
-Important commands (most important first):
+---
 
-1) Build the image (produces the multi-stage image):
+Important commands (visual variants):
 
-   docker build -t multi-stage_go_image .
+1) Build the image (large code block):
 
-2) Run the container (maps port 8080, names the container):
+```
+$ docker build -t multi-stage_go_image .
+```
 
-   docker run --name multi-stage_container -p 8080:8080 -d multi-stage_go_image
+2) Run the container (compact inline + arrow style):
 
-Helpful cleanup and debugging commands:
+=> `docker run --name multi-stage_container -p 8080:8080 -d multi-stage_go_image`
 
-- Remove unused images:
+3) Helpful cleanup and debugging commands (list + small block):
 
-  docker image prune -a -f
+- Remove unused images (one-liner): `docker image prune -a -f`
+- Full system prune including volumes: `docker system prune -a --volumes -f`
 
-- Full system prune including volumes:
+Small block of cleanup commands:
 
-  docker system prune -a --volumes -f
+```
+# cleanup images and system
+docker image prune -a -f
+docker system prune -a --volumes -f
+```
 
-- Open a shell inside the running container:
+4) Open a shell inside the running container (callout block):
 
-  docker exec -it multi-stage_container sh
+>>> Run this to inspect the container filesystem and logs:
 
-That's it — build, run, and use the exec command to inspect the running container. The Dockerfiles (Dockerfile.build and Dockerfile.runtime) show the multi-stage setup used here.
+```
+docker exec -it multi-stage_container sh
+```
+
+---
+
+Tips:
+- Build first, then run. Use `docker exec` to inspect or debug the running container.
+- The Dockerfiles (Dockerfile.build and Dockerfile.runtime) show the multi-stage setup used here.
+
